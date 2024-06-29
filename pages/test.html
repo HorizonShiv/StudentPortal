@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- HTML code for input field -->
+  <label for="numInputs">Number of inputs:</label>
+  <input type="number" id="numInputs" min="1" max="10">
+  <label for="multiplier">Multiplier:</label>
+  <input type="number" id="multiplier" value="1">
+  <div id="inputsContainer"></div>
+
+  
+  <script>
+    const numInputsInput = document.getElementById('numInputs');
+const multiplierInput = document.getElementById('multiplier');
+const inputsContainer = document.getElementById('inputsContainer');
+
+function calculateResult(inputValue, multiplierValue) {
+  const staticData = [1, 2, 3, 4, 5]; // Static data to multiply with
+  const results = staticData.map((data) => data * inputValue * multiplierValue);
+  return results;
+}
+
+numInputsInput.addEventListener('change', function() {
+  const numInputs = parseInt(numInputsInput.value);
+  if (numInputs) {
+    inputsContainer.innerHTML = '';
+    for (let i = 0; i < numInputs; i++) {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = `input${i}`;
+      input.id = `input${i}`;
+      input.onkeyup = function() {
+        const inputValue = parseFloat(input.value) || 0;
+        const multiplierValue = parseFloat(multiplierInput.value) || 0;
+        const results = calculateResult(inputValue, multiplierValue);
+        // Set the results in the corresponding input fields
+        results.forEach((result, index) => {
+          const inputField = document.getElementById(`inputResult${index}`);
+          if (inputField) {
+            inputField.value = result;
+          }
+        });
+      };
+      inputsContainer.appendChild(input);
+    }
+    // Create the input fields to display the results
+    const resultsContainer = document.createElement('div');
+    for (let i = 0; i < 5; i++) {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = `inputResult${i}`;
+      input.id = `inputResult${i}`;
+      resultsContainer.appendChild(input);
+    }
+    inputsContainer.appendChild(resultsContainer);
+  } else {
+    inputsContainer.innerHTML = '';
+  }
+});
+
+multiplierInput.addEventListener('change', function() {
+  const inputs = inputsContainer.querySelectorAll('input[type="text"]');
+  inputs.forEach(function(input) {
+    const inputValue = parseFloat(input.value) || 0;
+    const multiplierValue = parseFloat(multiplierInput.value) || 0;
+    const results = calculateResult(inputValue, multiplierValue);
+    // Set the results in the corresponding input fields
+    results.forEach((result, index) => {
+      const inputField = document.getElementById(`inputResult${index}`);
+      if (inputField) {
+        inputField.value = result;
+      }
+    });
+  });
+});
+
+  </script>
+
+
+  </script>
+  
+</body>
+</html>
